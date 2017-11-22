@@ -107,7 +107,7 @@ bot.on('start', (data) => {
 
         if (!snoozed.includes(slackIDs[author])) {
           console.log(githubUsers[author], message, params);
-          // bot.postMessageToUser(githubUsers[author], message, params);
+          bot.postMessageToUser(githubUsers[author], message, params);
         }
       }
     });
@@ -135,7 +135,7 @@ bot.on('start', (data) => {
 
           if (!snoozed.includes(slackIDs[reviewer])) {
             console.log(githubUsers[reviewer], message, params);
-            // bot.postMessageToUser(githubUsers[reviewer], message, params);
+            bot.postMessageToUser(githubUsers[reviewer], message, params);
           }
         }
       }
