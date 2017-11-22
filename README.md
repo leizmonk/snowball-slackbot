@@ -37,4 +37,4 @@ This bot will operate by default between 10AM and 6PM local time, Monday through
 - Message `snowball-snooze` if you want to shut off reminders for the rest of the workday. Reminders will resume the next day.
 - Message `snowball-resume` to resume reminders without waiting for the next day.
 
-Feel free to comment on requests for additional features or contribute to this project. I'm a product manager and not full on programmer by trade so contributions, refactors, etc are more than welcome!
+Contact me if you have setup problems. Report any bugs you find. Feel free to comment on requests for additional features or contribute to this project. I'm a product manager and not full on programmer by trade so contributions, refactors, etc are more than welcome!
