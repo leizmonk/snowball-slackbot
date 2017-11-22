@@ -3,7 +3,7 @@ Snowball is a Slackbot that will periodically send reminder messages to designat
   - pull requests that they have been asked to review
   - changes requested by reviewers on a pull request (these are sent to the pull request author)
 
-The inspiration behind this project came from an engineering team retrospective at the project author's company (Phido.io) in which team members expressed that these types of reminders get lost in email. A decision was made that a Slackbot would offer a better delivery system for such reminders.
+The inspiration behind this project came from an engineering team retrospective at the project author's company (<a href="http://www.phido.io/" target="_blank">Phido.io</a>) in which team members expressed that these types of reminders get lost in email. A decision was made that a Slackbot would offer a better delivery system for such reminders.
 
 It is a revamp of <a href="https://github.com/Ahmadposten/Github-slack-reminder">an existing library</a>, but implemented with JavaScript Promises.
 
