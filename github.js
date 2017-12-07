@@ -80,7 +80,7 @@ const self = module.exports = {
                   'author': data[i]['user']['login'],
                   'title': data[i]['title'],
                   'pr_url': data[i]['html_url'],
-                  'created_at': data[i]['created_at'],
+                  'created_at': data[i]['created_at']
                 });
               }
             }
