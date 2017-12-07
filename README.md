@@ -1,7 +1,8 @@
 ### What is this?
 Snowball is a Slackbot that will periodically send reminder messages to designated users in specified GitHub organizations about:
   - pull requests that they have been asked to review
-  - changes requested by reviewers on a pull request (these are sent to the pull request author)
+  - changes requested by reviewers on a pull request (sent to PR author)
+  - approved pull requests that have not been merged (sent to PR author)
 
 The inspiration behind this project came from an engineering team retrospective at the project author's company (<a href="http://www.phido.io/" target="_blank">Phido.io</a>) in which team members expressed that these types of reminders get lost in email. A decision was made that a Slackbot would offer a better delivery system for such reminders.
 
@@ -34,7 +35,8 @@ This bot will operate by default between 10AM and 6PM local time, Monday through
 - `node snowball`
 
 ### Commands
-- Message `snowball-snooze` if you want to shut off reminders for the rest of the workday. Reminders will resume the next day.
-- Message `snowball-resume` to resume reminders without waiting for the next day.
+- `snowball-snooze` if you want to shut off reminders for the rest of the workday. Reminders will resume the next day.
+- `snowball-resume` if you want to resume getting reminders.
+- `snowball-fetch` to get on demand reminders. If you have no reminders pending, this command won't do anything (you won't get a message back).
 
 Contact me if you have setup problems. Report any bugs you find. Feel free to comment on requests for additional features or contribute to this project. I'm a product manager and not full on programmer by trade so contributions, refactors, etc are more than welcome!
