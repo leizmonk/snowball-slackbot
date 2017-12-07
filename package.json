@@ -3,8 +3,17 @@
   "version": "1.0.2",
   "description": "Send reminder messages to Slack users about GitHub PRs that require review, changes, or are approved.",
   "main": "snowball.js",
+  "keywords": [
+    "node",
+    "slackbot",
+    "github",
+    "pull requests",
+    "reminders"
+  ],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "lodash": "^4.17.4",    
+    "lodash": "^4.17.4",
     "octonode": "^0.7.13",
     "slackbots": "^0.5.3"
   }
