@@ -1,9 +1,10 @@
 {
   "name": "snowball-slackbot",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Send messages to Slack channels about GitHub PRs",
   "main": "snowball.js",
   "dependencies": {
+    "lodash": "^4.17.4",    
     "octonode": "^0.7.13",
     "slackbots": "^0.5.3"
   }
