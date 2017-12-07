@@ -92,7 +92,7 @@ const self = module.exports = {
 
     return Promise.all(promiseArr);
   },
-  // Assign globally accessible letiable to contain the array of [{'PR author': 'PR URL'}]
+  // Assign globally accessible object to contain info on PRs (author, url, title, timestamp)
   referenceOpenPulls: (pullRequestInfo) => {
     prVitalInfo = pullRequestInfo;
 

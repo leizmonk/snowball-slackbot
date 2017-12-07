@@ -42,7 +42,7 @@ bot.on('start', (data) => {
   }
 
   // Get all changes requested
-  getChangesRequested = (orgs, githubUser) => {
+  getChangesRequested = (orgs) => {
     github.allOrgsRepos(orgs).then(orgRepos => {
       const repos = [].concat(...orgRepos);  
       return github.composePullRequestSlugs(repos);
@@ -63,7 +63,7 @@ bot.on('start', (data) => {
   }
 
   // Get all reivewers requested
-  getReviewersRequested = (orgs, githubUser) => {
+  getReviewersRequested = (orgs) => {
     github.allOrgsRepos(orgs).then(orgRepos => {
       const repos = [].concat(...orgRepos);
       return github.composePullRequestSlugs(repos);
