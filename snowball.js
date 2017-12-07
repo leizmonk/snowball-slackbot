@@ -41,8 +41,28 @@ bot.on('start', (data) => {
     });
   }
 
+  // Get all approved PRs that haven't been merged
+  getApprovedPullRequests = (orgs, githubUser) => {
+    github.allOrgsRepos(orgs).then(orgRepos => {
+      const repos = [].concat(...orgRepos);
+      return github.composePullRequestSlugs(repos);
+    }).then(prSlugs => {
+      const slugs = [].concat(...prSlugs);
+      return github.composeRequest(slugs);
+    }).then(requestArgs => {
+      const requests = [].concat(...requestArgs);
+      return github.allApprovedPulls(requests);
+    }).then(approved => {
+      return github.mapApprovedPulls(approved);
+    }).then(approvedPulls => {
+      messageApproved(approvedPulls, githubUser);
+    }).catch((err) => {
+      console.log(err);
+    });
+  }
+
   // Get all changes requested
-  getChangesRequested = (orgs) => {
+  getChangesRequested = (orgs, githubUser) => {
     github.allOrgsRepos(orgs).then(orgRepos => {
       const repos = [].concat(...orgRepos);  
       return github.composePullRequestSlugs(repos);
@@ -63,7 +83,7 @@ bot.on('start', (data) => {
   }
 
   // Get all reivewers requested
-  getReviewersRequested = (orgs) => {
+  getReviewersRequested = (orgs, githubUser) => {
     github.allOrgsRepos(orgs).then(orgRepos => {
       const repos = [].concat(...orgRepos);
       return github.composePullRequestSlugs(repos);
@@ -82,26 +102,6 @@ bot.on('start', (data) => {
       console.log(err);
     });
   }
-
-  // Get all approved PRs that haven't been merged
-  getApprovedPullRequests = (orgs) => {
-    github.allOrgsRepos(orgs).then(orgRepos => {
-      const repos = [].concat(...orgRepos);
-      return github.composePullRequestSlugs(repos);
-    }).then(prSlugs => {
-      const slugs = [].concat(...prSlugs);
-      return github.composeRequest(slugs);
-    }).then(requestArgs => {
-      const requests = [].concat(...requestArgs);
-      return github.allApprovedPulls(requests);
-    }).then(approved => {
-      return github.mapApprovedPulls(approved);
-    }).then(approvedPulls => {
-      messageApproved(approvedPulls, githubUser);
-    }).catch((err) => {
-      console.log(err);
-    });
-  } 
 
   // TODO: For each PR author who has changes requested, goal is to send
   // one message per PR that includes usernames of all reviewers
@@ -165,14 +165,14 @@ bot.on('start', (data) => {
         "\tCreated at: " + created;
 
       // Changes requested reminders without filtering for a specific user
-      if (allApprovedPRs.length && slackUser == undefined) {
+      if (allApprovedPRs.length && githubUser == undefined) {
         if (notSnoozed) {
           console.log(recipient, message, params);
           bot.postMessageToUser(recipient, message, params);
         }
       // This filters for a specific user for on demand reminders
-      } else if (allApprovedPRs.length && slackUser != undefined) {
-        if (notSnoozed && recipient == slackUser) {
+      } else if (allApprovedPRs.length && githubUser != undefined) {
+        if (notSnoozed && recipient == githubUser) {
           console.log(recipient, message, params);
           bot.postMessageToUser(recipient, message, params);
         }
@@ -231,6 +231,7 @@ bot.on('start', (data) => {
       "If nothing shows up, then you're in the clear!", params);
 
     // These reminders will be filtered for the user requesting the reminders
+    getApprovedPullRequests(orgs, githubUser);
     getChangesRequested(orgs, githubUser);
     getReviewersRequested(orgs, githubUser);
   }
@@ -245,9 +246,9 @@ bot.on('start', (data) => {
     // Only execute the poller when it's during working hours on weekdays
     if (hours >= workStart && hours < workEnd && day != 0 && day != 6) {
       getOpenPullRequests(orgs);
+      getApprovedPullRequests(orgs);
       getChangesRequested(orgs);
       getReviewersRequested(orgs);
-      getApprovedPullRequests(orgs);
       
       setTimeout(init, interval * 60 * 60 * 1000);
     } else {
