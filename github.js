@@ -1,25 +1,25 @@
 const github = require('octonode');
 const token = process.env.GITHUB_TOKEN;
 const utils = require('./utils');
-var prVitalInfo = [];
+let prVitalInfo = [];
 
 const client = github.client(token);
 
-var self = module.exports = {
+const self = module.exports = {
   // Get repos for each org and creates a array containing [{'org1': 'repo'}, {'org2': 'repo2'}, ...] from that data
   allOrgsRepos: (orgs) => {
-    var promiseArr = [];
-    var orgList = orgs.split(',');
+    const promiseArr = [];
+    const orgList = orgs.split(',');
 
     orgList.forEach((orgName) => {
-      var repos = [];
+      const repos = [];
       promiseArr.push(
         new Promise((resolve, reject) => {
           client.org(orgName).repos({}, (err, data, headers) => {
             if (err) {
               reject(err);
             } else {
-              for (var i in data) {
+              for (let i in data) {
                 repos.push({[data[i]['owner']['login']]: data[i]['name']}); 
               }
             }
@@ -32,12 +32,12 @@ var self = module.exports = {
   },
   // Composes pull request slugs for subsequent API calls
   composePullRequestSlugs: (repos) => {
-    var promiseArr = [];
+    const promiseArr = [];
 
     repos.forEach((repo) => {
-      var owner = Object.keys(repo).toString();
-      var pulls = [];
-      var repoName = repo[owner];
+      const owner = Object.keys(repo).toString();
+      const pulls = [];
+      const repoName = repo[owner];
 
       // Resolves to an array of ['org/repo:PR#']
       promiseArr.push(
@@ -46,7 +46,7 @@ var self = module.exports = {
             if (err) {
               reject(err);
             } else {
-              for (var i in data) {
+              for (let i in data) {
                 pulls.push(data[i]['url'].replace('https://api.github.com/repos/','').replace('/pulls/', ':'));
               }
             }
@@ -60,12 +60,12 @@ var self = module.exports = {
   },
   // Grabs all open pull requests for all repos in all orgs
   getOpenPullRequestInfo: (repos) => {
-    var promiseArr = [];
+    const promiseArr = [];
 
     repos.forEach((repo) => {
-      var owner = Object.keys(repo).toString();
-      var prInfo = [];
-      var repoName = repo[owner];
+      const owner = Object.keys(repo).toString();
+      const prInfo = [];
+      const repoName = repo[owner];
 
       // Resolves to an array of hashes like 
       // [{author: 'PR author', title: 'PR title', pr_url: 'PR URL', created_at: 'date created'}]
@@ -75,7 +75,7 @@ var self = module.exports = {
             if (err) {
               reject(err);
             } else {
-              for (var i in data) {
+              for (let i in data) {
                 prInfo.push({
                   'author': data[i]['user']['login'],
                   'title': data[i]['title'],
@@ -92,7 +92,7 @@ var self = module.exports = {
 
     return Promise.all(promiseArr);
   },
-  // Assign globally accessible variable to contain the array of [{'PR author': 'PR URL'}]
+  // Assign globally accessible object to contain info on PRs (author, url, title, timestamp)
   referenceOpenPulls: (pullRequestInfo) => {
     prVitalInfo = pullRequestInfo;
 
@@ -103,9 +103,9 @@ var self = module.exports = {
     promiseArr = [];
 
     pullRequestSlug.forEach((slug) => {
-      var params = {};
-      var repo = slug.split(':')[0];
-      var pullNumber = slug.split(':')[1];
+      const params = {};
+      const repo = slug.split(':')[0];
+      const pullNumber = slug.split(':')[1];
 
       params[repo] = pullNumber;
       requestArgs = [];
@@ -127,9 +127,9 @@ var self = module.exports = {
 
     // Iterates over the hash above to retrieve reviews for each PR
     requests.forEach((request) => {
-      var repoStr = Object.keys(request).toString();
-      var pullNum = Number(Object.values(request));
-      var changes = [];
+      const repoStr = Object.keys(request).toString();
+      const pullNum = Number(Object.values(request));
+      const changes = [];
 
       promiseArr.push(
         new Promise((resolve, reject) => {
@@ -137,7 +137,7 @@ var self = module.exports = {
             if (err) {
               reject(err);
             } else {
-              for (var i in data) {
+              for (let i in data) {
                 if (data[i]['state'] == ['CHANGES_REQUESTED']) {
                   changes.push({[data[i]['user']['login']]: data[i]['html_url']});
                 }
@@ -151,13 +151,13 @@ var self = module.exports = {
 
     return Promise.all(promiseArr);
   },
-  // Resolves to an array of hashes containing info on PRs and reviewers requested
-  // Will return an empty array of reviewers requested if there are none  
+  // Resolves to an array of hashes containing info on PRs and changes requested
+  // Will return an empty array if no changes are requested
   mapChangesRequestedToPRs: (changes) => {
     promiseArr = [];
 
     prVitalInfo.forEach((item, i) => {
-      var changesRequested = [];
+      const changesRequested = [];
 
       promiseArr.push(
         new Promise((resolve, reject) => {
@@ -183,9 +183,9 @@ var self = module.exports = {
 
     // Iterates over the hash above to retrieve reviews for each PR
     requests.forEach((request) => {
-      var repoStr = Object.keys(request).toString();
-      var pullNum = Number(Object.values(request));
-      var reviewRequests = [];
+      const repoStr = Object.keys(request).toString();
+      const pullNum = Number(Object.values(request));
+      const reviewRequests = [];
       
       promiseArr.push(
         new Promise((resolve, reject) => {
@@ -193,7 +193,7 @@ var self = module.exports = {
             if (err) {
               reject(err);
             } else { 
-              for (var i in data) {
+              for (let i in data) {
                 reviewRequests.push(data[i]);
               }
             }
@@ -201,15 +201,15 @@ var self = module.exports = {
           });
         })
       )
-    });  
+    });
 
     return Promise.all(promiseArr);
   },
   // Returns an array of hashes containing info on PRs and reviewers requested
   // Will return an empty array of reviewers requested if there are none
   mapReviewsRequestedtoPRs: (reviewers) => {
-    var requestedReviewers = prVitalInfo.map((item, i) => {
-      var formatted = {};
+    const requestedReviewers = prVitalInfo.map((item, i) => {
+      const formatted = {};
       formatted['author'] = item.author,
       formatted['created'] = item.created_at,
       formatted['pr_url'] = item.pr_url,
@@ -219,23 +219,64 @@ var self = module.exports = {
       return formatted;
     });
 
-    return requestedReviewers
+    return requestedReviewers;
+  },
+  // Resolves to an array of hashes containing info on approved PRs not yet merged
+  allApprovedPulls: (requests) => {
+    promiseArr = [];
+
+    // Iterates over the hash above to retrieve reviews for each PR
+    requests.forEach((request) => {
+      const repoStr = Object.keys(request).toString();
+      const pullNum = Number(Object.values(request));
+      const approved = [];
+
+      promiseArr.push(
+        new Promise((resolve, reject) => {
+          client.pr(repoStr, pullNum).reviews((err, data, headers) => {
+            if (err) {
+              reject(err);
+            } else {
+              for (let i in data) {
+                if (data[i]['state'] == ['APPROVED']) {
+                  const partialLink = data[i]['_links']['html']['href'].toString().split('https://github.com').pop();
+                  const slug = partialLink.substring(0, partialLink.indexOf('#'));
+                  approved.push(slug);
+                }
+              }
+            }
+            resolve(approved);
+          });
+        })
+      )
+    });
+
+    return Promise.all(promiseArr);
+  },
+  // Resolves to an array of hashes containing info on approved PRs not yet merged
+  // Will return an empty array of reviewers requested if there are none 
+  mapApprovedPulls: (approved) => {
+    const urlSlugs = [].concat(...approved.filter(slug => slug.length));
+    const matchingPrs = [];
+
+    for (let i in urlSlugs) {
+      matchingPrs.push(...prVitalInfo.filter(obj => obj.pr_url.match(urlSlugs[i])))
+    }
+
+    return matchingPrs;
   },
   // Generic function to call the GitHub API
   callApi: (url) => {
-    const baseUrl = 'https://api.github.com/';
-    var fullUrl = baseUrl + url;
-    var headers = {
+    const headers = {
       'Authorization': 'token ' + token,
-      'User-Agent': 'Request-Promise-Native'
+      'User-Agent': 'Request-Promise'
     };
 
-    return client.get(fullUrl, {}, (err, status, data, headers) => {
+    return client.get(url, {}, (err, status, data, headers) => {
       if (err) {
         console.log('There was an error: ', err);
         console.log('Status code: ', status);
       } else {
-        console.log(data);
         return(data);
       }
     });
