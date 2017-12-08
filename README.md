@@ -17,10 +17,8 @@ Link to GitHub: <a href="https://github.com/leizmonk/snowball-slackbot" target="
 - If using npm, `npmi -g snowball-slackbot`
 
 ### Additional Setup
-- You need to populate the `github-slack_users.json` file in the `config` directory with a key of GitHub usernames to Slack usernames for your org
-  - Ex: `{ "l337hackerGH": "slackerelite" }`
-- You need to populate the `github_users-slack_ids.json` file in the `config` directory with a key of GitHub user names to Slack user IDs for your org
-  - Ex: `{ "l337hackerGH": "U4ZAQH555" }`
+- Create a local config file `~/.ghslackuser` with mappings of your org's GitHub users and their corresponding Slack usernames like:`{ "l337hackerGH": "slackerelite" }`
+- Create a local config file `~/.ghslackids` with a mapping of your org's GitHub user names to their corresponding Slack user IDs like: `{ "l337hackerGH": "U4ZAQH555" }`
   - Here's a quick way to get your org's Slack user IDs that you want to include: https://stackoverflow.com/questions/40940327/what-is-the-simplest-way-to-find-a-slack-team-id-and-a-channel-id
 - Set up a new bot in your org's Slack account
   - Go to `https://YOUR-ORG.slack.com/apps/manage/custom-integrations`
