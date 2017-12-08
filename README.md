@@ -13,8 +13,10 @@ Its character and avatar are based off the <a href="http://rickandmorty.wikia.co
 Link to GitHub: <a href="https://github.com/leizmonk/snowball-slackbot" target="_blank">snowball-slackbot</a>
 
 ### Installation
-- Clone this repo (if not using npm)
-- `npm i`
+- Clone this repo (if not using npm) then `npm i`, see section on execution after the rest of these setup steps
+- If using npm, `npmi -g snowball-slackbot`
+
+### Additional Setup
 - You need to populate the `github-slack_users.json` file in the `config` directory with a key of GitHub usernames to Slack usernames for your org
   - Ex: `{ "l337hackerGH": "slackerelite" }`
 - You need to populate the `github_users-slack_ids.json` file in the `config` directory with a key of GitHub user names to Slack user IDs for your org
@@ -32,11 +34,17 @@ This bot will operate by default between 10AM and 6PM local time, Monday through
 - Change work hours by modifying the values of the `workStart` and `workEnd` variables on lines 13 & 14 of `snowball.js`.
 - Save a custom integer value for `GITHUB_SLACK_REMINDER_INTERVAL` in your `.bashrc` or `.bash_profile` if you don't want to use the default value of 2 (hours).
 
-### Execution
-- You need Node version 8+
-- `node snowball`
+### Usage
+You need Node 8+
 
-### Commands
+If you've cloned this repo directly off of Github:
+- From the root folder of the repo: `cd lib/ && node index.js`
+
+If you've installed this as an npm module, just run `snowball` in your terminal
+
+
+### Slack Commands
+You can use the following commands with the bot running in Slack:
 - `snowball-snooze` if you want to shut off reminders for the rest of the workday. Reminders will resume the next day.
 - `snowball-resume` if you want to resume getting reminders.
 - `snowball-fetch` to get on demand reminders. If you have no reminders pending, this command won't do anything (you won't get a message back).
