@@ -2,4 +2,5 @@
 
 const snowball = require('../lib/index.js');
 
-snowball.start();
+snowball.startBot();
+snowball.botMsg();
