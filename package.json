@@ -1,6 +1,6 @@
 {
   "name": "snowball-slackbot",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Send reminder messages to Slack users about GitHub PRs that require review, changes, or are approved.",
   "main": "snowball.js",
   "bin": {
